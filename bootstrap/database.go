@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
+	"gohub/app/models/user"
 	"gohub/pkg/config"
 	"gohub/pkg/database"
 	"gorm.io/driver/mysql"
@@ -14,12 +15,12 @@ func SetupDB() {
 	var dbConfig gorm.Dialector
 	if config.Get("database.connection") == "mysql" {
 		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=%v&parseTime=True&multiStatements=true&loc=Local",
-			config.Get("database.user"),
-			config.Get("database.password"),
-			config.Get("database.host"),
-			config.Get("database.port"),
-			config.Get("database.name"),
-			config.Get("database.charset"),
+			config.Get("database.mysql.user"),
+			config.Get("database.mysql.password"),
+			config.Get("database.mysql.host"),
+			config.Get("database.mysql.port"),
+			config.Get("database.mysql.database"),
+			config.Get("database.mysql.charset"),
 		)
 		dbConfig = mysql.New(mysql.Config{
 			DSN: dsn,
@@ -30,4 +31,5 @@ func SetupDB() {
 
 	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
 
+	database.DB.AutoMigrate(&user.User{})
 }
