@@ -18,6 +18,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			suc := new(auth.SignUpController)
 			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
+			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
 		}
 	}
 }
