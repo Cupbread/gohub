@@ -11,7 +11,7 @@ func main() {
 
 	bootstrap.SetupRoute(r)
 
-	err := r.Run(":8080")
+	err := r.Run(":3000")
 	if err != nil {
 		fmt.Println(err)
 	}
