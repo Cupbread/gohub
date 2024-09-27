@@ -14,18 +14,7 @@ type SignUpController struct {
 
 func (sc SignUpController) IsPhoneExist(c *gin.Context) {
 	request := requests.SignupPhoneExistRequest{}
-	if err := c.ShouldBind(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
-		return
-	}
-
-	errs := requests.ValidateSignupPhoneExist(&request, c)
-
-	if len(errs) > 0 {
-		// 验证失败，返回 422 状态码和错误信息
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": errs,
-		})
+	if ok := requests.Validate(c, &request, requests.SignupPhoneExist); !ok {
 		return
 	}
 
@@ -34,16 +23,7 @@ func (sc SignUpController) IsPhoneExist(c *gin.Context) {
 
 func (sc SignUpController) IsEmailExist(c *gin.Context) {
 	request := requests.SignupEmailExistRequest{}
-	if err := c.ShouldBind(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
-		return
-	}
-	errs := requests.ValidateSignupEmailExist(&request, c)
-
-	if len(errs) > 0 {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": errs,
-		})
+	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"exist": user.IsEmailExist(request.Email)})
