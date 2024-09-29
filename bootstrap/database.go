@@ -6,9 +6,9 @@ import (
 	"gohub/app/models/user"
 	"gohub/pkg/config"
 	"gohub/pkg/database"
+	"gohub/pkg/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 func SetupDB() {
@@ -29,7 +29,7 @@ func SetupDB() {
 		panic(errors.New("database connection not set"))
 	}
 
-	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
+	database.Connect(dbConfig, logger.NewGormLogger())
 
 	database.DB.AutoMigrate(&user.User{})
 }
