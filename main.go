@@ -22,6 +22,8 @@ func main() {
 
 	bootstrap.SetupLogger()
 
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.New()
 	bootstrap.SetupDB()
 	bootstrap.SetupRoute(r)
